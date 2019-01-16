@@ -11,7 +11,7 @@
             <!--This sends everything else to /public -->
             <id>nexus</id>
             <mirrorOf>*</mirrorOf>
-            <url>http://192.168.0.101:8882/content/groups/public/</url>
+            <url>http://192.168.0.101:8882/repository/maven-public/</url>
         </mirror>
     </mirrors>
     <profiles>
