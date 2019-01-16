@@ -66,17 +66,11 @@ objects:
              sh "${mvnCmd} deploy -DskipTests=true"
 
              stage 'Deploy DEV'
-             sh "rm -rf oc-build && mkdir -p oc-build/deployments"
-             sh "cp target/simpleosp.war oc-build/deployments/ROOT.war"
              // clean up. keep the image stream
              sh "oc project ${DEV_PROJECT}"
              sh "oc delete bc,dc,svc,route -l app=simpleosp -n ${DEV_PROJECT}"
              // create build. override the exit code since it complains about exising imagestream
-             sh "oc new-build --name=simpleosp --image-stream=wildfly --binary=true --labels=app=simpleosp -n ${DEV_PROJECT} || true"
-             // build image
-             sh "oc start-build simpleosp --from-dir=oc-build --wait=true -n ${DEV_PROJECT}"
-             // deploy image
-             sh "oc new-app simpleosp:latest -n ${DEV_PROJECT}"
+             sh "oc new-app --image='registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest' http://192.168.0.101:8881/git/ecovaci/simpleosp-microservice.git --labels=app=simpleosp -n ${DEV_PROJECT} || true"
              sh "oc expose svc/simpleosp -n ${DEV_PROJECT}"
 
              stage 'Deploy STAGE'
