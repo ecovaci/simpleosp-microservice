@@ -1,0 +1,8 @@
+oc new-project dev --display-name="Dev"
+oc new-project stage --display-name="Stage"
+oc new-project cicd --display-name="CI/CD"
+
+oc adm policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n stage
+oc adm policy add-role-to-user admin system:serviceaccount:cicd:jenkins -n dev
+
+oc process -f simple-template.yaml | oc create -f -
