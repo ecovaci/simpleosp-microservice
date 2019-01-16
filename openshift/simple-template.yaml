@@ -58,7 +58,7 @@ objects:
                      step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
                  },
                  'Static Analysis': {
-                     sh "${mvnCmd} jacoco:report sonar:sonar -Dsonar.host.url=http://192.168.0.101:9000 -Dsonar.login=7c54723d98d8173a1d88ca52ef3e8ada9025377e -DskipTests=true"
+                     sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://192.168.0.101:9000 -Dsonar.login=7c54723d98d8173a1d88ca52ef3e8ada9025377e -DskipTests=true"
                  }
              )
 
