@@ -70,7 +70,12 @@ objects:
              sh "oc project ${DEV_PROJECT}"
              sh "oc delete bc,dc,svc,route -l app=simpleosp -n ${DEV_PROJECT}"
              // create build. override the exit code since it complains about existing imagestream
-             sh "oc new-app simpleosp:latest --docker-image='registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest' http://192.168.0.101:8881/git/ecovaci/simpleosp-microservice.git --labels=app=simpleosp --name=simpleosp -n dev || true"
+             sh "oc new-build --docker-image='registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest' http://192.168.0.101:8881/git/ecovaci/simpleosp-microservice.git --labels=app=simpleosp --name=simpleosp -n dev || true"
+             // start build
+             sh "oc start-build simpleosp --wait=true -n ${DEV_PROJECT}"
+             // deploy image
+             sh "oc new-app simpleosp:latest -n ${DEV_PROJECT}"
+
              sh "oc expose svc/simpleosp -n ${DEV_PROJECT}"
 
              stage 'Deploy STAGE'
