@@ -76,6 +76,8 @@ objects:
              // deploy image
              sh "oc new-app simpleosp:latest -n ${DEV_PROJECT}"
 
+             sh "oc set probe dc/simpleosp --readiness --get-url=http://:8080/actuator/health"
+
              sh "oc expose svc/simpleosp -n ${DEV_PROJECT}"
 
              stage 'Deploy STAGE'
